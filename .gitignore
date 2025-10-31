@@ -65,3 +65,4 @@ out/
 *.tar
 *.gz
 *.bak
+.vercel

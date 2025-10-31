@@ -11,7 +11,7 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { AnimatePresence } from "framer-motion";
 import SearchPage from "../pages/SearchPage";
-import TestLoader from "../pages/testLoader";
+import TestLoader from "../pages/TestLoader";
 import Notification from "../pages/Notification";
 
 const AnimatedRoutes = () => {

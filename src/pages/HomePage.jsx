@@ -42,7 +42,7 @@ const HomePage = () => {
     const getTrending = async () => {
       try {
         setLoadingTopics(true);
-        const res = await fetch("http://127.0.0.1:8000/api/trending");
+        const res = await fetch("https://wordwave-ai-1.onrender.com/api/trending");
         const data = await res.json();
 
         if (data.error) {
