@@ -5,29 +5,41 @@ import userAtom from "../atoms/userAtom";
 
 const SocketContext = createContext();
 
-export const useSocket = () => {
-	return useContext(SocketContext);
-};
+export const useSocket = () => useContext(SocketContext);
 
 export const SocketContextProvider = ({ children }) => {
-	const [socket, setSocket] = useState(null);
-	const [onlineUsers, setOnlineUsers] = useState([]);
-	const user = useRecoilValue(userAtom);
+  const [socket, setSocket] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const user = useRecoilValue(userAtom);
 
-	useEffect(() => {
-		const socket = io("http://localhost:4000", {
-			query: {
-				userId: user?._id,
-			},
-		});
+  useEffect(() => {
+    if (!user?._id) return;
 
-		setSocket(socket);
+    // ✅ Automatically switch between local and production backend
+    const SOCKET_URL =
+      process.env.NODE_ENV === "production"
+        ? import.meta.env.VITE_BACKEND_URL || window.location.origin
+        : "http://localhost:4000";
 
-		socket.on("getOnlineUsers", (users) => {
-			setOnlineUsers(users);
-		});
-		return () => socket && socket.close();
-	}, [user?._id]);
+    const socketInstance = io(SOCKET_URL, {
+      query: { userId: user._id },
+      transports: ["websocket"], // ensures compatibility with Vercel/production envs
+    });
 
-	return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
+    setSocket(socketInstance);
+
+    socketInstance.on("getOnlineUsers", (users) => {
+      setOnlineUsers(users);
+    });
+
+    return () => {
+      socketInstance.disconnect();
+    };
+  }, [user?._id]);
+
+  return (
+    <SocketContext.Provider value={{ socket, onlineUsers }}>
+      {children}
+    </SocketContext.Provider>
+  );
 };

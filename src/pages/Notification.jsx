@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import { Box, Heading } from "@chakra-ui/react";
 import userAtom from "../atoms/userAtom";
 import NotificationItem from "../components/NotificationItem";
+import { apiFetch } from "../utils/api";
 
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
@@ -11,7 +12,7 @@ const Notification = () => {
   useEffect(() => {
     const getNotifications = async () => {
       try {
-        const res = await fetch(`/api/notifications?userId=${user._id}`, {
+        const res = await apiFetch(`/api/notifications?userId=${user._id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -39,7 +40,7 @@ const Notification = () => {
   useEffect(() => {
     const markNotificationsRead = async () => {
       try {
-        await fetch("/api/notifications/markAsRead", {
+        await apiFetch("/api/notifications/markAsRead", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

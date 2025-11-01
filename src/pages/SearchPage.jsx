@@ -12,6 +12,7 @@ import postsAtom from "../atoms/postsAtom";
 import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import TriangleSpinner from "../components/TriangleSpinner";
+import { apiFetch } from "../utils/api";
 
 const SearchPage = () => {
   const [posts, setPosts] = useRecoilState(postsAtom);
@@ -35,13 +36,13 @@ const SearchPage = () => {
 
   const debouncedQuery = useDebounce(query, 500);
 
-  // Fetch recommended posts on mount
+  // apiFetch recommended posts on mount
   useEffect(() => {
     const getRecommendations = async () => {
       setLoading(true);
       setPosts([]);
       try {
-        const res = await fetch(`/api/posts/rec/${user._id}`);
+        const res = await apiFetch(`/api/posts/rec/${user._id}`);
         const data = await res.json();
         if (data.error) {
           showToast("Error", data.error, "error");
@@ -70,7 +71,7 @@ const SearchPage = () => {
 
     try {
       // Search users
-      const usersRes = await fetch(`/api/users/search/${debouncedQuery}`);
+      const usersRes = await apiFetch(`/api/users/search/${debouncedQuery}`);
       const usersData = await usersRes.json();
       if (usersData.error) {
         showToast("Error", usersData.error, "error");
@@ -80,7 +81,7 @@ const SearchPage = () => {
       }
 
       // Search posts
-      const postsRes = await fetch(`/api/posts/search/${debouncedQuery}`);
+      const postsRes = await apiFetch(`/api/posts/search/${debouncedQuery}`);
       const postsData = await postsRes.json();
       if (postsData.error) {
         showToast("Error", postsData.error, "error");

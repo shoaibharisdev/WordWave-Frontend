@@ -8,6 +8,7 @@ import SuggestedUsers from "../components/SuggestedUsers";
 import { motion } from "framer-motion";
 import Logo from "../components/Logo";
 import TriangleSpinner from "../components/TriangleSpinner";
+import { apiFetch } from "../utils/api";
 
 const HomePage = () => {
   const [posts, setPosts] = useRecoilState(postsAtom);
@@ -22,7 +23,7 @@ const HomePage = () => {
       setLoading(true);
       setPosts([]);
       try {
-        const res = await fetch("/api/posts/feed");
+        const res = await apiFetch("/api/posts/feed");
         const data = await res.json();
         if (data.error) {
           showToast("Error", data.error, "error");
@@ -50,7 +51,7 @@ const HomePage = () => {
           return;
         }
 
-        // Update the topics state with the fetched data
+        // Update the topics state with the apiFetched data
         setTopics(data);
         setLoadingTopics(false);
         console.log("topics: " + topics);
@@ -64,7 +65,7 @@ const HomePage = () => {
 
   const searchTrending = async (topic) => {
     try {
-      const res = await fetch(`/api/posts/search/${topic}`);
+      const res = await apiFetch(`/api/posts/search/${topic}`);
       const data = await res.json();
       if (data.error) {
         showToast("Error", data.error, "error");

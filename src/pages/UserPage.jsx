@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
 import { motion } from "framer-motion";
 import TriangleSpinner from "../components/TriangleSpinner";
+import { apiFetch } from "../utils/api";
 
 const UserPage = () => {
   const { user, loading } = useGetUserProfile();
@@ -32,7 +33,7 @@ const UserPage = () => {
             ? `/api/replies/${username}`
             : `/api/posts/user/${username}`;
 
-        const res = await fetch(endpoint);
+        const res = await apiFetch(endpoint);
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.error || "Failed to fetch posts");
