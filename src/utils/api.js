@@ -14,10 +14,5 @@ export async function apiFetch(path, options = {}) {
     credentials: "include", // keep this if using cookies/sessions
   });
 
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(errorText || "API request failed");
-  }
-
   return res;
 }
