@@ -12,6 +12,7 @@ import { MdOutlineSettings } from "react-icons/md";
 import { BsSearch } from "react-icons/bs";
 import Logo from "./Logo";
 
+import { Heading } from "@chakra-ui/react";
 const Header = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
 	const user = useRecoilValue(userAtom);
@@ -19,7 +20,16 @@ const Header = () => {
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
 
 	return (
-		<Flex justifyContent={"space-between"} mt={6} mb='12'>
+		<Flex      justifyContent="space-between"
+      alignItems="center"
+      position="sticky"
+      top="0"
+      zIndex="1000"
+      height="80px" // 👈 sets a proper fixed height
+      px={6}        // padding for left/right space
+	  pb={10}
+	  pt={10}
+      boxShadow="sm">
 			{user && (
 				<Link as={RouterLink} to='/'>
 					<AiFillHome size={24} />
@@ -39,7 +49,12 @@ const Header = () => {
 				onClick={toggleColorMode}
 			/> */}
 			<span style={{cursor:"pointer"}} onClick={toggleColorMode}>
+			<Flex>
 			<Logo colorMode={colorMode} onClick={toggleColorMode} />
+			<Heading 
+			fontSize={{ base: "larger", lg: "larger" }}
+			>WordWave</Heading>
+			</Flex>
 			</span>
 			{user && (
 				<Flex alignItems={"center"} gap={4}>

@@ -20,7 +20,8 @@ function App() {
     const user = useRecoilValue(userAtom);
     const { pathname } = useLocation();
     const [isLoading, setIsLoading] = useState(true);
-	const {colorMode,setColorMode}=useColorMode()
+    const { colorMode, setColorMode } = useColorMode();
+    
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsLoading(false);
@@ -28,6 +29,9 @@ function App() {
 
         return () => clearTimeout(timer);
     }, []);
+
+    // Check if we're on auth page
+    const isAuthPage = pathname === "/auth";
 
     return (
         <Box position="relative" w="full">
@@ -46,31 +50,25 @@ function App() {
                     <StartupLoader />
                 </Box>
             ) : (
-                <Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
-                    <Header />
-                    <AnimatedRoutes />
-                    {/* <Routes>
-                        <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />} />
-                        <Route path="/auth" element={!user ? <AuthPage /> : <Navigate to="/" />} />
-                        <Route path="/update" element={user ? <UpdateProfilePage /> : <Navigate to="/auth" />} />
-                        <Route
-                            path="/:username"
-                            element={
-                                user ? (
-                                    <>
-                                        <UserPage />
-                                        <CreatePost />
-                                    </>
-                                ) : (
-                                    <UserPage />
-                                )
+                <>
+                    {isAuthPage ? (
+                        // Auth page without container - full width
+                        <AnimatedRoutes />
+                    ) : (
+                        // Other pages with container and header
+                        <Container 
+                            maxW={
+                                pathname === "/" 
+                                    ? { base: "full", md: "1400px" } 
+                                    : { base: "full", md: "620px" }
                             }
-                        />
-                        <Route path="/:username/post/:pid" element={<PostPage />} />
-                        <Route path="/chat" element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
-                        <Route path="/settings" element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
-                    </Routes> */}
-                </Container>
+                            px={{ base: 2, md: 4 }}
+                        >
+                            <Header />
+                            <AnimatedRoutes />
+                        </Container>
+                    )}
+                </>
             )}
         </Box>
     );
