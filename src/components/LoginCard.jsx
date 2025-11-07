@@ -234,10 +234,6 @@ import {
 			>
 			  <Flex gap={8} mt={4}>
 				<Box textAlign="center">
-				  <Text fontSize="3xl" fontWeight="bold" color="blue.400">10K+</Text>
-				  <Text fontSize="sm" color="gray.400">Active Users</Text>
-				</Box>
-				<Box textAlign="center">
 				  <Text fontSize="3xl" fontWeight="bold" color="purple.400">50K+</Text>
 				  <Text fontSize="sm" color="gray.400">Posts Created</Text>
 				</Box>
